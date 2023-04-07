@@ -4,7 +4,11 @@ import React from "react";
 import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
 
 async function fetchRepos() {
-  const response = await fetch("https://api.github.com/users/mambo-dev/repos");
+  const response = await fetch("https://api.github.com/users/mambo-dev/repos", {
+    next: {
+      revalidate: 60,
+    },
+  });
 
   const repos = response.json();
   return repos;
@@ -66,7 +70,7 @@ export default async function ReposPage({}: Props) {
                     sizes=""
                   />
                 </Link>
-                <div className="flex flex-col w-full gap-y-2 text-slate-700 items-center justify-start text-left">
+                <div className="flex flex-col flex-1 gap-y-2 text-slate-700 items-center justify-start text-left">
                   <Link
                     href={`/code/repos/${repo.githubRepoName}`}
                     className="font-semibold  mr-auto"
