@@ -1,35 +1,32 @@
+"use client";
+import react, { useState, useEffect } from "react";
 import Link from "next/link";
+import Courses, { Course } from "../components/courses/courses";
+import Loading from "./loading";
+import SearchCourse from "../components/courses/search";
 
 export default function HomePage() {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const response = await fetch(`http://localhost:3000/api/courses`);
+      const courses: Course[] = await response.json();
+      setCourses(courses);
+      setLoading(false);
+    };
+    fetchCourses();
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="w-full min-h-screen px-2">
-      <h1>welcome next js</h1>
-      <ul className="px-4">
-        <li>
-          <Link
-            className="text-blue-500 hover:text-blue-600 hover:underline"
-            href="/"
-          >
-            home
-          </Link>
-        </li>
-        <li>
-          <Link
-            className="text-blue-500 hover:text-blue-600 hover:underline"
-            href="/about"
-          >
-            about
-          </Link>
-        </li>
-        <li>
-          <Link
-            className="text-blue-500 hover:text-blue-600 hover:underline"
-            href="/about/team"
-          >
-            team
-          </Link>
-        </li>
-      </ul>
+      <SearchCourse setCourses={setCourses} setLoading={setLoading} />
+      <Courses courses={courses} />
     </div>
   );
 }

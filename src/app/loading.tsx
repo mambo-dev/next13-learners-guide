@@ -5,7 +5,7 @@ type Props = {};
 
 export default function Loading({}: Props) {
   return (
-    <div className="h-screen bg-white">
+    <div className="h-fit mx-auto mt-32 bg-white">
       <div className="flex justify-center items-center h-full">
         <Image
           alt="loader"
